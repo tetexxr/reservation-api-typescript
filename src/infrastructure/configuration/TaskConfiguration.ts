@@ -3,6 +3,7 @@ import { SendNotificationTask } from '@/infrastructure/tasks/SendNotificationTas
 
 export class TaskConfiguration {
   static configure(): void {
-    container.resolve(SendNotificationTask)
+    container.registerSingleton<SendNotificationTask>('SendNotificationTask', SendNotificationTask)
+    container.resolve<SendNotificationTask>('SendNotificationTask')
   }
 }
