@@ -7,6 +7,7 @@ import { RepositoryConfiguration } from './infrastructure/configuration/Reposito
 import { TaskConfiguration } from './infrastructure/configuration/TaskConfiguration'
 import { AvailabilityController } from './infrastructure/controllers/availability/AvailabilityController'
 import { ReservationController } from './infrastructure/controllers/reservations/ReservationController'
+import { SendNotificationTask } from '@/infrastructure/tasks/SendNotificationTask'
 
 const bootstrap = async (): Promise<void> => {
   // Configure dependencies
@@ -17,13 +18,12 @@ const bootstrap = async (): Promise<void> => {
 
   const app = await build()
 
-  // Resolve controllers
-  const availabilityController = container.resolve<AvailabilityController>('AvailabilityController')
-  const reservationController = container.resolve<ReservationController>('ReservationController')
-
   // Register routes
-  availabilityController.registerRoutes(app)
-  reservationController.registerRoutes(app)
+  container.resolve<AvailabilityController>('AvailabilityController').registerRoutes(app)
+  container.resolve<ReservationController>('ReservationController').registerRoutes(app)
+
+  // Start background tasks
+  container.resolve<SendNotificationTask>('SendNotificationTask')
 
   await app.listen({ port: 3000 })
 }
