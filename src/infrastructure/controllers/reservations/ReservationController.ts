@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { FastifyInstance } from 'fastify'
 import { CreateReservation } from '@/application/reservations/CreateReservation'
 import { CancelReservation } from '@/application/reservations/CancelReservation'
@@ -10,12 +11,13 @@ import { UpdateReservationRequest } from './UpdateReservationRequest'
 import { GetReservationsResponse, toDto } from './GetReservationsResponse'
 import { CreateReservationResponse } from '@/infrastructure/controllers/reservations/CreateReservationResponse'
 
+@injectable()
 export class ReservationController {
   constructor(
-    private readonly createReservation: CreateReservation,
-    private readonly updateReservation: UpdateReservation,
-    private readonly cancelReservation: CancelReservation,
-    private readonly reservationRepository: ReservationRepository
+    @inject('CreateReservation') private readonly createReservation: CreateReservation,
+    @inject('UpdateReservation') private readonly updateReservation: UpdateReservation,
+    @inject('CancelReservation') private readonly cancelReservation: CancelReservation,
+    @inject('ReservationRepository') private readonly repository: ReservationRepository
   ) {}
 
   registerRoutes(fastify: FastifyInstance): void {
@@ -47,7 +49,7 @@ export class ReservationController {
     fastify.get<{
       Querystring: { name?: string }
     }>('/v1/reservations', async (request): Promise<GetReservationsResponse> => {
-      const reservations = await this.reservationRepository.findAll(request.query.name)
+      const reservations = await this.repository.findAll(request.query.name)
       return toDto(reservations)
     })
   }
