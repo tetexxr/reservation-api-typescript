@@ -1,4 +1,4 @@
-import { Reservation } from '../../domain/reservations/Reservation'
+import { Reservation } from '@/domain/reservations/Reservation'
 
 export class PromoteWaitListCommand {
   constructor(

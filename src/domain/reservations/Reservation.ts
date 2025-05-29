@@ -2,7 +2,7 @@ import { CustomerDetails } from './CustomerDetails'
 import { ReservationId } from './ReservationId'
 
 export class Reservation {
-  private static readonly RESERVATION_DURATION_MINUTES = 45
+  public static readonly RESERVATION_DURATION_MINUTES = 45
 
   constructor(
     private readonly id: ReservationId,
