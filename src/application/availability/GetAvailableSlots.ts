@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { AvailableSlot } from '@/domain/availability/AvailableSlot'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
@@ -5,15 +6,16 @@ import { ReservationTableRepository } from '@/domain/reservations/ReservationTab
 import { TableRepository } from '@/domain/tables/TableRepository'
 import { GetAvailableSlotsQuery } from './GetAvailableSlotsQuery'
 
+@injectable()
 export class GetAvailableSlots {
   private static readonly SLOT_DURATION = 15
   private static readonly OPENING_HOUR = 8
   private static readonly CLOSING_HOUR = 14
 
   constructor(
-    private readonly tableRepository: TableRepository,
-    private readonly reservationRepository: ReservationRepository,
-    private readonly reservationTableRepository: ReservationTableRepository
+    @inject('TableRepository') private readonly tableRepository: TableRepository,
+    @inject('ReservationRepository') private readonly reservationRepository: ReservationRepository,
+    @inject('ReservationTableRepository') private readonly reservationTableRepository: ReservationTableRepository
   ) {}
 
   async execute(query: GetAvailableSlotsQuery): Promise<AvailableSlot[]> {

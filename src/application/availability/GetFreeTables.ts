@@ -1,14 +1,16 @@
+import { injectable, inject } from 'tsyringe'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 import { Table } from '@/domain/tables/Table'
 import { TableRepository } from '@/domain/tables/TableRepository'
 import { GetFreeTablesQuery } from './GetFreeTablesQuery'
 
+@injectable()
 export class GetFreeTables {
   constructor(
-    private readonly tableRepository: TableRepository,
-    private readonly reservationRepository: ReservationRepository,
-    private readonly reservationTableRepository: ReservationTableRepository
+    @inject('TableRepository') private readonly tableRepository: TableRepository,
+    @inject('ReservationRepository') private readonly reservationRepository: ReservationRepository,
+    @inject('ReservationTableRepository') private readonly reservationTableRepository: ReservationTableRepository
   ) {}
 
   async execute(query: GetFreeTablesQuery): Promise<Table[]> {

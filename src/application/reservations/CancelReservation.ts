@@ -1,3 +1,4 @@
+import { injectable, inject } from 'tsyringe'
 import { PromoteWaitList } from '../waitlist/PromoteWaitList'
 import { PromoteWaitListCommand } from '../waitlist/PromoteWaitListCommand'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
@@ -5,12 +6,13 @@ import { ReservationTableRepository } from '@/domain/reservations/ReservationTab
 import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
 import { CancelReservationCommand } from './CancelReservationCommand'
 
+@injectable()
 export class CancelReservation {
   constructor(
-    private readonly reservationRepository: ReservationRepository,
-    private readonly reservationTableRepository: ReservationTableRepository,
-    private readonly waitListRepository: WaitListRepository,
-    private readonly promoteWaitList: PromoteWaitList
+    @inject('ReservationRepository') private readonly reservationRepository: ReservationRepository,
+    @inject('ReservationTableRepository') private readonly reservationTableRepository: ReservationTableRepository,
+    @inject('WaitListRepository') private readonly waitListRepository: WaitListRepository,
+    @inject('PromoteWaitList') private readonly promoteWaitList: PromoteWaitList
   ) {}
 
   async execute(command: CancelReservationCommand): Promise<void> {

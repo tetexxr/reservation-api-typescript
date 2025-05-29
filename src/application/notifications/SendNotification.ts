@@ -1,12 +1,14 @@
+import { injectable, inject } from 'tsyringe'
 import { NotificationRepository } from '@/domain/notifications/NotificationRepository'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 
+@injectable()
 export class SendNotification {
   constructor(
-    private readonly reservationRepository: ReservationRepository,
-    private readonly reservationTableRepository: ReservationTableRepository,
-    private readonly notificationRepository: NotificationRepository
+    @inject('ReservationRepository') private readonly reservationRepository: ReservationRepository,
+    @inject('ReservationTableRepository') private readonly reservationTableRepository: ReservationTableRepository,
+    @inject('NotificationRepository') private readonly notificationRepository: NotificationRepository
   ) {}
 
   async execute(): Promise<void> {
