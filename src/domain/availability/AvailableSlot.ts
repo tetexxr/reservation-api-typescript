@@ -2,18 +2,18 @@ import { TableNumber } from '../tables/TableNumber'
 
 export class AvailableSlot {
   constructor(
-    private readonly startTime: Date,
-    private readonly endTime: Date,
+    private readonly from: Date,
+    private readonly to: Date,
     private readonly partySize: number,
     private readonly tableNumber: TableNumber
   ) {}
 
-  getStartTime(): Date {
-    return this.startTime
+  getFrom(): Date {
+    return this.from
   }
 
-  getEndTime(): Date {
-    return this.endTime
+  getTo(): Date {
+    return this.to
   }
 
   getPartySize(): number {
