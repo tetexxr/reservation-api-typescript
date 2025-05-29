@@ -1,8 +1,8 @@
 import { GetFreeTables } from '../availability/GetFreeTables'
 import { GetFreeTablesQuery } from '../availability/GetFreeTablesQuery'
-import { ReservationRepository } from '../../domain/reservations/ReservationRepository'
-import { ReservationTableRepository } from '../../domain/reservations/ReservationTableRepository'
-import { WaitListRepository } from '../../domain/waitlist/WaitListRepository'
+import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
+import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
+import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
 import { PromoteWaitListCommand } from './PromoteWaitListCommand'
 
 export class PromoteWaitList {
