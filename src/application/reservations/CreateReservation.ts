@@ -18,14 +18,14 @@ export class CreateReservation {
 
   async execute(command: CreateReservationCommand): Promise<ReservationId> {
     const reservation = await this.reservationRepository.insert(command.reservation)
-    const query = new GetFreeTablesQuery(command.reservation.getTime(), command.reservation.getPartySize())
+    const query = new GetFreeTablesQuery(command.reservation.time, command.reservation.partySize)
     const freeTables = await this.getFreeTables.execute(query)
     if (freeTables.length === 0) {
-      await this.waitListRepository.add(reservation.getId())
+      await this.waitListRepository.add(reservation.id)
     } else {
       const table = freeTables[0]
-      await this.reservationTableRepository.add(reservation.getId(), table.getTableNumber())
+      await this.reservationTableRepository.add(reservation.id, table.getTableNumber())
     }
-    return reservation.getId()
+    return reservation.id
   }
 }

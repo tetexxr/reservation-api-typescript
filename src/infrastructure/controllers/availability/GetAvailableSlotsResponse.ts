@@ -14,8 +14,9 @@ export class AvailableSlotDto {
     public readonly tableNumber: number
   ) {}
 }
+
 export function toDto(availableSlots: AvailableSlot[]): GetAvailableSlotsResponse {
   return new GetAvailableSlotsResponse(
-    availableSlots.map((slot) => new AvailableSlotDto(slot.getFrom(), slot.getTo(), slot.getTableNumber().value))
+    availableSlots.map((slot) => new AvailableSlotDto(slot.from, slot.to, slot.tableNumber.value))
   )
 }

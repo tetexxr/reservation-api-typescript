@@ -23,12 +23,12 @@ export function toDto(reservations: Reservation[]): GetReservationsResponse {
     reservations.map(
       (reservation) =>
         new ReservationDto(
-          reservation.getId().value,
-          reservation.getTime(),
-          reservation.getCustomerDetails().getName(),
-          reservation.getCustomerDetails().getEmail(),
-          reservation.getCustomerDetails().getPhoneNumber(),
-          reservation.getPartySize()
+          reservation.id.value,
+          reservation.time,
+          reservation.customerDetails.name,
+          reservation.customerDetails.email,
+          reservation.customerDetails.phoneNumber,
+          reservation.partySize
         )
     )
   )

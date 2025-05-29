@@ -2,10 +2,10 @@ import { TableNumber } from '../tables/TableNumber'
 
 export class AvailableSlot {
   constructor(
-    private readonly from: Date,
-    private readonly to: Date,
-    private readonly partySize: number,
-    private readonly tableNumber: TableNumber
+    public readonly from: Date,
+    public readonly to: Date,
+    public readonly partySize: number,
+    public readonly tableNumber: TableNumber
   ) {}
 
   getFrom(): Date {

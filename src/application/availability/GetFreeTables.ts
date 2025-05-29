@@ -17,7 +17,7 @@ export class GetFreeTables {
     const tables = await this.tableRepository.findAll()
     const overlappingReservations = (await this.reservationRepository.findAll())
       .filter((reservation) => reservation.isOverlappingWith(query.reservationTime))
-      .map((reservation) => reservation.getId())
+      .map((reservation) => reservation.id)
     const allReservationTables = await this.reservationTableRepository.findAll()
     const reservedTables = [...allReservationTables]
       .filter((entry) => overlappingReservations.includes(entry[0]))

@@ -5,27 +5,11 @@ export class Reservation {
   public static readonly RESERVATION_DURATION_MINUTES = 45
 
   constructor(
-    private readonly id: ReservationId,
-    private readonly time: Date,
-    private readonly customerDetails: CustomerDetails,
-    private readonly partySize: number
+    public readonly id: ReservationId,
+    public readonly time: Date,
+    public readonly customerDetails: CustomerDetails,
+    public readonly partySize: number
   ) {}
-
-  getId(): ReservationId {
-    return this.id
-  }
-
-  getTime(): Date {
-    return this.time
-  }
-
-  getCustomerDetails(): CustomerDetails {
-    return this.customerDetails
-  }
-
-  getPartySize(): number {
-    return this.partySize
-  }
 
   getEndTime(): Date {
     return new Date(this.time.getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60000)

@@ -9,9 +9,9 @@ export class PromoteWaitListCommand {
 
   static create(reservation: Reservation): PromoteWaitListCommand {
     return new PromoteWaitListCommand(
-      new Date(reservation.getTime().getTime() - Reservation.RESERVATION_DURATION_MINUTES * 60000),
+      new Date(reservation.time.getTime() - Reservation.RESERVATION_DURATION_MINUTES * 60000),
       new Date(reservation.getEndTime().getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60000),
-      reservation.getPartySize()
+      reservation.partySize
     )
   }
 }

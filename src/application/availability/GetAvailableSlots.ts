@@ -25,7 +25,7 @@ export class GetAvailableSlots {
     const reservationTables = await this.reservationTableRepository.findAll()
     const reservations = (await this.reservationRepository.findAll())
       .filter((reservation) => {
-        const reservationDate = new Date(reservation.getTime())
+        const reservationDate = new Date(reservation.time)
         const queryDate = new Date(query.date)
         return (
           reservationDate.getFullYear() === queryDate.getFullYear() &&
@@ -33,10 +33,8 @@ export class GetAvailableSlots {
           reservationDate.getDate() === queryDate.getDate()
         )
       })
-      .filter((reservation) =>
-        tables.some((table) => table.getTableNumber() === reservationTables.get(reservation.getId()))
-      )
-      .sort((a, b) => a.getTime().getTime() - b.getTime().getTime())
+      .filter((reservation) => tables.some((table) => table.getTableNumber() === reservationTables.get(reservation.id)))
+      .sort((a, b) => a.time.getTime() - b.time.getTime())
 
     const opening = new Date(query.date)
     opening.setHours(GetAvailableSlots.OPENING_HOUR, 0, 0, 0)
@@ -50,8 +48,8 @@ export class GetAvailableSlots {
         const slotEndTime = new Date(slotTime.getTime() + GetAvailableSlots.SLOT_DURATION * 60000)
         const slotFilter = (reservation: Reservation): boolean =>
           slotTime < reservation.getEndTime() &&
-          slotEndTime > reservation.getTime() &&
-          reservationTables.get(reservation.getId()) === table.getTableNumber()
+          slotEndTime > reservation.time &&
+          reservationTables.get(reservation.id) === table.getTableNumber()
         const isSlotAvailable = !reservations.some(slotFilter)
         if (isSlotAvailable) {
           availableSlots.push(new AvailableSlot(slotTime, slotEndTime, query.partySize, table.getTableNumber()))

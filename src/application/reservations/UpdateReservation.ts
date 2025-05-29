@@ -16,16 +16,16 @@ export class UpdateReservation {
   ) {}
 
   async execute(command: UpdateReservationCommand): Promise<void> {
-    await this.reservationTableRepository.remove(command.reservation.getId())
-    await this.waitListRepository.remove(command.reservation.getId())
+    await this.reservationTableRepository.remove(command.reservation.id)
+    await this.waitListRepository.remove(command.reservation.id)
     await this.reservationRepository.update(command.reservation)
-    const query = new GetFreeTablesQuery(command.reservation.getTime(), command.reservation.getPartySize())
+    const query = new GetFreeTablesQuery(command.reservation.time, command.reservation.partySize)
     const freeTables = await this.getFreeTables.execute(query)
     if (freeTables.length === 0) {
-      await this.waitListRepository.add(command.reservation.getId())
+      await this.waitListRepository.add(command.reservation.id)
     } else {
       const table = freeTables[0]
-      await this.reservationTableRepository.add(command.reservation.getId(), table.getTableNumber())
+      await this.reservationTableRepository.add(command.reservation.id, table.getTableNumber())
     }
   }
 }

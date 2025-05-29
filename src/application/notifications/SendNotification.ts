@@ -18,13 +18,13 @@ export class SendNotification {
 
     const allReservations = await this.reservationRepository.findAll()
     const reservations = allReservations.filter((reservation) => {
-      const reservationTime = new Date(reservation.getTime())
+      const reservationTime = new Date(reservation.time)
       reservationTime.setMinutes(0, 0, 0)
       return reservationTime.getTime() === oneHourLater.getTime()
     })
 
     for (const reservation of reservations) {
-      const tableNumber = await this.reservationTableRepository.findById(reservation.getId())
+      const tableNumber = await this.reservationTableRepository.findById(reservation.id)
       if (tableNumber !== null) {
         await this.notificationRepository.notify(reservation)
       }
