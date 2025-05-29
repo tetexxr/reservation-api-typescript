@@ -19,7 +19,8 @@ export class PromoteWaitList {
       return
     }
 
-    const reservationsWaiting = (await this.reservationRepository.findAll())
+    const allReservations = await this.reservationRepository.findAll()
+    const reservationsWaiting = allReservations
       .filter(
         (reservation) =>
           reservation.getTime() > command.from &&
