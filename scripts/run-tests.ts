@@ -1,4 +1,5 @@
 import { spawnSync } from 'child_process'
+import 'reflect-metadata'
 
 const run = (command: string, args: string[]): void => {
   const result = spawnSync(command, args, { stdio: 'inherit' })
