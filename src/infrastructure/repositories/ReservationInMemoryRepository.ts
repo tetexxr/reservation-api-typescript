@@ -10,21 +10,18 @@ export class ReservationInMemoryRepository implements ReservationRepository {
 
   async findById(reservationId: ReservationId): Promise<Reservation | null> {
     return (
-      ReservationInMemoryRepository.reservations.find(
-        (reservation) => reservation.getId().value === reservationId.value
-      ) || null
+      ReservationInMemoryRepository.reservations.find((reservation) => reservation.id.value === reservationId.value) ||
+      null
     )
   }
 
   async update(reservation: Reservation): Promise<void> {
-    const index = ReservationInMemoryRepository.reservations.findIndex(
-      (r) => r.getId().value === reservation.getId().value
-    )
+    const index = ReservationInMemoryRepository.reservations.findIndex((r) => r.id.value === reservation.id.value)
     ReservationInMemoryRepository.reservations[index] = reservation
   }
 
   async delete(reservationId: ReservationId): Promise<void> {
-    const index = ReservationInMemoryRepository.reservations.findIndex((r) => r.getId().value === reservationId.value)
+    const index = ReservationInMemoryRepository.reservations.findIndex((r) => r.id.value === reservationId.value)
     if (index !== -1) {
       ReservationInMemoryRepository.reservations.splice(index, 1)
     }
@@ -35,7 +32,7 @@ export class ReservationInMemoryRepository implements ReservationRepository {
       return ReservationInMemoryRepository.reservations
     }
     return ReservationInMemoryRepository.reservations.filter((reservation) =>
-      this.matches(reservation.getCustomerDetails().getName(), name)
+      this.matches(reservation.customerDetails.name, name)
     )
   }
 

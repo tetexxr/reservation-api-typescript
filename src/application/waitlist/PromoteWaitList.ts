@@ -25,24 +25,22 @@ export class PromoteWaitList {
     const reservationsWaiting = allReservations
       .filter(
         (reservation) =>
-          reservation.getTime() > command.from &&
+          reservation.time > command.from &&
           reservation.getEndTime() < command.to &&
-          reservation.getPartySize() <= command.maximumSeatingCapacity
+          reservation.partySize <= command.maximumSeatingCapacity
       )
-      .filter((reservation) => waitList.has(reservation.getId()))
+      .filter((reservation) => waitList.has(reservation.id))
 
     for (const reservation of reservationsWaiting) {
       const freeTables = await this.getFreeTables.execute(
-        new GetFreeTablesQuery(reservation.getTime(), reservation.getPartySize())
+        new GetFreeTablesQuery(reservation.time, reservation.partySize)
       )
       if (freeTables.length > 0) {
-        await this.reservationTableRepository.add(reservation.getId(), freeTables[0].getTableNumber())
-        await this.waitListRepository.remove(reservation.getId())
+        await this.reservationTableRepository.add(reservation.id, freeTables[0].getTableNumber())
+        await this.waitListRepository.remove(reservation.id)
 
         // This can be replaced sending a notification to the customer
-        console.log(
-          `Promoted reservation ${reservation.getId().value} to table ${freeTables[0].getTableNumber().value}`
-        )
+        console.log(`Promoted reservation ${reservation.id.value} to table ${freeTables[0].getTableNumber().value}`)
       }
     }
   }
