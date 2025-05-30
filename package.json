@@ -6,8 +6,12 @@
   "scripts": {
     "run": "tsx src/server.ts",
     "build": "tsc",
-    "test": "vitest",
-    "test:run": "vitest run"
+    "test": "tsx scripts/run-tests.ts",
+    "test:run": "tsx scripts/run-tests.ts --run",
+    "test:unit": "vitest tests/unit",
+    "test:unit:run": "vitest run tests/unit",
+    "test:integration": "tsx scripts/run-tests.ts --integration",
+    "test:integration:run": "tsx scripts/run-tests.ts --integration --run"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
