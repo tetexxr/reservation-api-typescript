@@ -1,13 +1,13 @@
 import 'reflect-metadata'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { container } from 'tsyringe'
+import { Cleaner } from '../helpers/Cleaner'
+import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
-import { ReservationInMemoryRepository } from '@/infrastructure/repositories/ReservationInMemoryRepository'
-import { Cleaner } from '../helpers/Cleaner'
 
-describe('ReservationInMemoryRepository', () => {
-  const repository = container.resolve<ReservationInMemoryRepository>('ReservationRepository')
+describe('ReservationRepository', () => {
+  const repository = container.resolve<ReservationRepository>('ReservationRepository')
   const cleaner = container.resolve(Cleaner)
 
   beforeEach(async () => {
