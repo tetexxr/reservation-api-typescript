@@ -5,6 +5,7 @@ import { cleaner } from '../helpers/cleaner'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
+import { DateTime } from 'luxon'
 
 describe('ReservationRepository', () => {
   const repository = container.resolve<ReservationRepository>('ReservationRepository')
@@ -14,7 +15,8 @@ describe('ReservationRepository', () => {
   })
 
   it('should insert a reservation', async () => {
-    const reservation = Reservation.create(new Date(), new CustomerDetails('John', 'john@test.com', '931111111'), 4)
+    const date = DateTime.now().set({ millisecond: 0 }).toJSDate()
+    const reservation = Reservation.create(date, new CustomerDetails('John', 'john@test.com', '931111111'), 4)
     await repository.insert(reservation)
     const found = await repository.findById(reservation.id)
     expect(found).toEqual(reservation)
