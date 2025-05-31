@@ -12,11 +12,11 @@ export class Reservation {
   ) {}
 
   getEndTime(): Date {
-    return new Date(this.time.getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60000)
+    return new Date(this.time.getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60_000)
   }
 
   isOverlappingWith(otherTime: Date): boolean {
-    const otherEndTime = new Date(otherTime.getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60000)
+    const otherEndTime = new Date(otherTime.getTime() + Reservation.RESERVATION_DURATION_MINUTES * 60_000)
     return (
       (otherTime >= this.time && otherTime < this.getEndTime()) ||
       (otherEndTime > this.time && otherEndTime <= this.getEndTime())
