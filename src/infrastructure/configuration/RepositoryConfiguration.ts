@@ -9,16 +9,30 @@ import { ReservationInMemoryRepository } from '@/infrastructure/repositories/Res
 import { ReservationTableInMemoryRepository } from '@/infrastructure/repositories/ReservationTableInMemoryRepository'
 import { TableInMemoryRepository } from '@/infrastructure/repositories/TableInMemoryRepository'
 import { WaitListInMemoryRepository } from '@/infrastructure/repositories/WaitListInMemoryRepository'
+import { TableMysqlRepository } from '@/infrastructure/repositories/TableMysqlRepository'
+
+const USE_IN_MEMORY_REPOSITORIES = false
 
 export class RepositoryConfiguration {
   static configure(): void {
-    container.registerSingleton<ReservationRepository>('ReservationRepository', ReservationInMemoryRepository)
-    container.registerSingleton<TableRepository>('TableRepository', TableInMemoryRepository)
-    container.registerSingleton<ReservationTableRepository>(
-      'ReservationTableRepository',
-      ReservationTableInMemoryRepository
-    )
-    container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListInMemoryRepository)
-    container.registerSingleton<NotificationRepository>('NotificationRepository', NotificationLoggerRepository)
+    if (USE_IN_MEMORY_REPOSITORIES) {
+      container.registerSingleton<ReservationRepository>('ReservationRepository', ReservationInMemoryRepository)
+      container.registerSingleton<TableRepository>('TableRepository', TableInMemoryRepository)
+      container.registerSingleton<ReservationTableRepository>(
+        'ReservationTableRepository',
+        ReservationTableInMemoryRepository
+      )
+      container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListInMemoryRepository)
+      container.registerSingleton<NotificationRepository>('NotificationRepository', NotificationLoggerRepository)
+    } else {
+      container.registerSingleton<ReservationRepository>('ReservationRepository', ReservationInMemoryRepository)
+      container.registerSingleton<TableRepository>('TableRepository', TableMysqlRepository)
+      container.registerSingleton<ReservationTableRepository>(
+        'ReservationTableRepository',
+        ReservationTableInMemoryRepository
+      )
+      container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListInMemoryRepository)
+      container.registerSingleton<NotificationRepository>('NotificationRepository', NotificationLoggerRepository)
+    }
   }
 }
