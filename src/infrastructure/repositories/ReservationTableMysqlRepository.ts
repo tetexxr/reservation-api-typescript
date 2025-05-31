@@ -1,8 +1,8 @@
 import { injectable } from 'tsyringe'
+import { db } from '@/infrastructure/database/config'
 import { ReservationId } from '@/domain/reservations/ReservationId'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 import { TableNumber } from '@/domain/tables/TableNumber'
-import { db } from '@/infrastructure/database/config'
 
 @injectable()
 export class ReservationTableMysqlRepository implements ReservationTableRepository {
