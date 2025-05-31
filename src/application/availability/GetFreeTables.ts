@@ -23,9 +23,9 @@ export class GetFreeTables {
       .filter((entry) => overlappingReservations.includes(entry[0]))
       .map((entry) => entry[1])
     const freeTables = tables
-      .filter((table) => !reservedTables.some((reservedTable) => reservedTable === table.getTableNumber()))
+      .filter((table) => !reservedTables.some((reservedTable) => reservedTable.equals(table.tableNumber)))
       .filter((table) => table.isSuitableForPartySize(query.partySize))
-      .sort((a, b) => a.getTableNumber().value - b.getTableNumber().value)
+      .sort((a, b) => a.tableNumber.value - b.tableNumber.value)
     return freeTables
   }
 }

@@ -25,7 +25,7 @@ export class UpdateReservation {
       await this.waitListRepository.add(command.reservation.id)
     } else {
       const table = freeTables[0]
-      await this.reservationTableRepository.add(command.reservation.id, table.getTableNumber())
+      await this.reservationTableRepository.add(command.reservation.id, table.tableNumber)
     }
   }
 }
