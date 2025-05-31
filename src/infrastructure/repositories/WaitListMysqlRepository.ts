@@ -20,7 +20,7 @@ export class WaitListMysqlRepository implements WaitListRepository {
   }
 
   async findAll(): Promise<Set<ReservationId>> {
-    const reservations = await db.selectFrom('wait_list').select('reservation_id').execute()
+    const reservations = await db.selectFrom('wait_list').selectAll().execute()
     return new Set(reservations.map((r) => new ReservationId(r.reservation_id)))
   }
 }
