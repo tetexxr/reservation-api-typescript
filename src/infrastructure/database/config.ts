@@ -20,4 +20,7 @@ export interface Database {
     table_number: number
     maximum_seating_capacity: number
   }
+  wait_list: {
+    reservation_id: string
+  }
 }

@@ -9,6 +9,7 @@ import { ReservationInMemoryRepository } from '@/infrastructure/repositories/Res
 import { ReservationTableInMemoryRepository } from '@/infrastructure/repositories/ReservationTableInMemoryRepository'
 import { TableInMemoryRepository } from '@/infrastructure/repositories/TableInMemoryRepository'
 import { WaitListInMemoryRepository } from '@/infrastructure/repositories/WaitListInMemoryRepository'
+import { WaitListMysqlRepository } from '@/infrastructure/repositories/WaitListMysqlRepository'
 import { TableMysqlRepository } from '@/infrastructure/repositories/TableMysqlRepository'
 
 const USE_IN_MEMORY_REPOSITORIES = false
@@ -31,7 +32,7 @@ export class RepositoryConfiguration {
         'ReservationTableRepository',
         ReservationTableInMemoryRepository
       )
-      container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListInMemoryRepository)
+      container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListMysqlRepository)
       container.registerSingleton<NotificationRepository>('NotificationRepository', NotificationLoggerRepository)
     }
   }
