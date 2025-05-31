@@ -1,40 +1,68 @@
 import { spawnSync } from 'child_process'
 import 'reflect-metadata'
+import { pool } from '../src/infrastructure/database/config'
 
 const run = (command: string, args: string[]): void => {
+  console.log('\x1b[90m%s\x1b[0m', `$ ${command} ${args.join(' ')}`)
   const result = spawnSync(command, args, { stdio: 'inherit' })
-  if (result.status !== 0) process.exit(result.status || 1)
+  if (result.status !== 0) {
+    console.log('\x1b[31m%s\x1b[0m', `Command failed with status ${result.status}`)
+    process.exit(result.status || 1)
+  }
 }
 
-const waitForDatabase = (): void => {
-  console.log('⏳ Waiting for the database to be ready...')
+const waitForDatabase = async (): Promise<void> => {
+  process.stdout.write('⏳ Waiting for the database to be ready')
   let retries = 30
+  let lastError: Error | null = null
+
   while (retries > 0) {
-    const result = spawnSync('nc', ['-z', 'localhost', '3306'], { stdio: 'ignore' })
-    if (result.status === 0) {
-      console.log('✅ Database ready')
-      return
-    }
-    retries--
-    if (retries > 0) {
-      console.log(`⏳ Waiting for database... ${retries} retries left`)
-      spawnSync('sleep', ['1'], { stdio: 'ignore' })
+    try {
+      const connection = await pool.getConnection()
+      try {
+        await connection.query('SELECT 1')
+        console.log('\n✅ Database ready')
+        return
+      } finally {
+        connection.release()
+      }
+    } catch (error) {
+      lastError = error as Error
+      retries--
+      if (retries > 0) {
+        process.stdout.write('.')
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      }
     }
   }
-  console.error('❌ Database not ready after 30 seconds')
+
+  console.error('❌ Database not ready after 15 seconds')
+  console.error('Last error:', lastError?.message)
   process.exit(1)
 }
 
-console.log('🟡 Starting Docker Compose...')
-run('docker', ['compose', 'up', '-d'])
+const runTests = async (): Promise<void> => {
+  try {
+    console.log('🟡 Starting Docker Compose...')
+    run('docker', ['compose', 'up', '-d'])
 
-waitForDatabase()
+    await waitForDatabase()
 
-const isRunMode = process.argv.includes('--run')
-const isIntegrationOnly = process.argv.includes('--integration')
-console.log('🚀 Running tests...')
-const testPath = isIntegrationOnly ? 'tests/integration' : 'tests'
-run('npx', ['vitest', isRunMode ? 'run' : '', testPath].filter(Boolean))
+    console.log('🔄 Running database migrations...')
+    run('npx', ['tsx', 'node_modules/kysely-migrate/dist/esm/cli.js', 'up'])
 
-console.log('🧹 Cleaning up...')
-run('docker', ['compose', 'down'])
+    console.log('🚀 Running tests...')
+    const isRunMode = process.argv.includes('--run')
+    const isIntegrationOnly = process.argv.includes('--integration')
+    const testPath = isIntegrationOnly ? 'tests/integration' : 'tests'
+    run('npx', ['vitest', isRunMode ? 'run' : '', testPath])
+
+    console.log('🧹 Cleaning up...')
+    run('docker', ['compose', 'down'])
+  } catch (error) {
+    console.error('❌ Error during test execution:', error)
+    process.exit(1)
+  }
+}
+
+runTests()
