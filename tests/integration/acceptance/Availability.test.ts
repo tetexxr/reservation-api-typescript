@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { describe, it, beforeEach, expect } from 'vitest'
+import { describe, it, beforeAll, beforeEach, expect } from 'vitest'
 import app from '@/app'
 import { container } from 'tsyringe'
 import { CreateReservation } from '@/application/reservations/CreateReservation'
@@ -7,10 +7,15 @@ import { CreateReservationCommand } from '@/application/reservations/CreateReser
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { Cleaner } from '../helpers/Cleaner'
+import { seedTables } from '../helpers/seeds'
 
 describe('Availability', () => {
   const createReservation = container.resolve(CreateReservation)
   const cleaner = container.resolve(Cleaner)
+
+  beforeAll(async () => {
+    await seedTables()
+  })
 
   beforeEach(async () => {
     await cleaner.execute()
