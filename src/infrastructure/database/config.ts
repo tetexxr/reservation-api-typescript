@@ -23,4 +23,8 @@ export interface Database {
   wait_list: {
     reservation_id: string
   }
+  reservation_tables: {
+    reservation_id: string
+    table_number: number
+  }
 }

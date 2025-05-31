@@ -7,6 +7,7 @@ import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
 import { NotificationLoggerRepository } from '@/infrastructure/repositories/NotificationLoggerRepository'
 import { ReservationInMemoryRepository } from '@/infrastructure/repositories/ReservationInMemoryRepository'
 import { ReservationTableInMemoryRepository } from '@/infrastructure/repositories/ReservationTableInMemoryRepository'
+import { ReservationTableMysqlRepository } from '@/infrastructure/repositories/ReservationTableMysqlRepository'
 import { TableInMemoryRepository } from '@/infrastructure/repositories/TableInMemoryRepository'
 import { WaitListInMemoryRepository } from '@/infrastructure/repositories/WaitListInMemoryRepository'
 import { WaitListMysqlRepository } from '@/infrastructure/repositories/WaitListMysqlRepository'
@@ -30,7 +31,7 @@ export class RepositoryConfiguration {
       container.registerSingleton<TableRepository>('TableRepository', TableMysqlRepository)
       container.registerSingleton<ReservationTableRepository>(
         'ReservationTableRepository',
-        ReservationTableInMemoryRepository
+        ReservationTableMysqlRepository
       )
       container.registerSingleton<WaitListRepository>('WaitListRepository', WaitListMysqlRepository)
       container.registerSingleton<NotificationRepository>('NotificationRepository', NotificationLoggerRepository)
