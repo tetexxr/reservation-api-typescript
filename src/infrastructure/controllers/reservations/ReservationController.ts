@@ -24,7 +24,14 @@ export class ReservationController {
     fastify.post<{
       Body: CreateReservationRequest
     }>('/v1/reservations', async (request, reply): Promise<CreateReservationResponse> => {
-      const command = request.body.toCommand()
+      const createReservationRequest = new CreateReservationRequest(
+        new Date(request.body.time),
+        request.body.name,
+        request.body.email,
+        request.body.phoneNumber,
+        request.body.partySize
+      )
+      const command = createReservationRequest.toCommand()
       const id = await this.createReservation.execute(command)
       return reply.code(201).send({ reservationId: id.value })
     })
@@ -33,7 +40,14 @@ export class ReservationController {
       Params: { reservationId: string }
       Body: UpdateReservationRequest
     }>('/v1/reservations/:reservationId', async (request, reply) => {
-      const command = request.body.toCommand(new ReservationId(request.params.reservationId))
+      const updateReservationRequest = new UpdateReservationRequest(
+        new Date(request.body.time),
+        request.body.name,
+        request.body.email,
+        request.body.phoneNumber,
+        request.body.partySize
+      )
+      const command = updateReservationRequest.toCommand(new ReservationId(request.params.reservationId))
       await this.updateReservation.execute(command)
       return reply.code(204).send()
     })

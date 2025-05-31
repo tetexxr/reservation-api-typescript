@@ -9,13 +9,12 @@ export class AvailabilityController {
   constructor(@inject('GetAvailableSlots') private readonly getAvailableSlots: GetAvailableSlots) {}
 
   registerRoutes(fastify: FastifyInstance): void {
-    fastify.get<{ Querystring: { date: string; partySize: number } }>(
+    fastify.get<{ Querystring: { date: string; partySize: string } }>(
       '/v1/availability',
-      async (request, reply): Promise<GetAvailableSlotsResponse> => {
+      async (request): Promise<GetAvailableSlotsResponse> => {
         const { date, partySize } = request.query
-        const query = new GetAvailableSlotsQuery(new Date(date), partySize)
+        const query = new GetAvailableSlotsQuery(new Date(date), parseInt(partySize))
         const availableSlots = await this.getAvailableSlots.execute(query)
-        reply.send(toDto(availableSlots))
         return toDto(availableSlots)
       }
     )
