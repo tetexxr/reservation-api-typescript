@@ -6,14 +6,13 @@ import { ReservationRepository } from '@/domain/reservations/ReservationReposito
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { ReservationId } from '@/domain/reservations/ReservationId'
-import { Cleaner } from '../helpers/Cleaner'
+import { cleaner } from '../helpers/cleaner'
 
 describe('Reservation', () => {
   const reservationRepository = container.resolve<ReservationRepository>('ReservationRepository')
-  const cleaner = container.resolve(Cleaner)
 
   beforeEach(async () => {
-    await cleaner.execute()
+    await cleaner()
   })
 
   async function insertReservation(numberToAdd: number): Promise<void> {

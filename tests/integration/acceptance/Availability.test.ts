@@ -6,19 +6,18 @@ import { CreateReservation } from '@/application/reservations/CreateReservation'
 import { CreateReservationCommand } from '@/application/reservations/CreateReservationCommand'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
-import { Cleaner } from '../helpers/Cleaner'
+import { cleaner } from '../helpers/cleaner'
 import { seedTables } from '../helpers/seeds'
 
 describe('Availability', () => {
   const createReservation = container.resolve(CreateReservation)
-  const cleaner = container.resolve(Cleaner)
 
   beforeAll(async () => {
     await seedTables()
   })
 
   beforeEach(async () => {
-    await cleaner.execute()
+    await cleaner()
   })
 
   it('should get all available slots', async () => {

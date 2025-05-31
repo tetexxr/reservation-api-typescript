@@ -1,16 +1,15 @@
 import 'reflect-metadata'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { container } from 'tsyringe'
-import { Cleaner } from '../helpers/Cleaner'
+import { cleaner } from '../helpers/cleaner'
 import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
 import { ReservationId } from '@/domain/reservations/ReservationId'
 
 describe('WaitListRepository', () => {
   const repository = container.resolve<WaitListRepository>('WaitListRepository')
-  const cleaner = container.resolve(Cleaner)
 
   beforeEach(async () => {
-    await cleaner.execute()
+    await cleaner()
   })
 
   it('should add a reservation to the waitlist', async () => {
