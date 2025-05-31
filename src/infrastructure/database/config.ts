@@ -1,7 +1,7 @@
 import { Kysely, MysqlDialect } from 'kysely'
-import { createPool } from 'mysql2/promise'
+import { createPool } from 'mysql2'
 
-export const dbConfig = {
+const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306'),
   user: process.env.DB_USER || 'root',
@@ -9,7 +9,11 @@ export const dbConfig = {
   database: process.env.DB_NAME || 'reservation_api'
 }
 
-export const pool = createPool(dbConfig)
+export const db = new Kysely<Database>({
+  dialect: new MysqlDialect({
+    pool: createPool(dbConfig)
+  })
+})
 
 export interface Database {
   tables: {
@@ -17,7 +21,3 @@ export interface Database {
     maximum_seating_capacity: number
   }
 }
-
-export const db = new Kysely<Database>({
-  dialect: new MysqlDialect({ pool })
-})

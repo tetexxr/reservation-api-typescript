@@ -1,6 +1,7 @@
 import { spawnSync } from 'child_process'
 import 'reflect-metadata'
-import { pool } from '../src/infrastructure/database/config'
+import { db } from '../src/infrastructure/database/config'
+import { sql } from 'kysely'
 
 const run = (command: string, args: string[]): void => {
   console.log('\x1b[90m%s\x1b[0m', `$ ${command} ${args.join(' ')}`)
@@ -18,14 +19,9 @@ const waitForDatabase = async (): Promise<void> => {
 
   while (retries > 0) {
     try {
-      const connection = await pool.getConnection()
-      try {
-        await connection.query('SELECT 1')
-        console.log('\n✅ Database ready')
-        return
-      } finally {
-        connection.release()
-      }
+      await sql`SELECT 1`.execute(db)
+      console.log('\n✅ Database ready')
+      return
     } catch (error) {
       lastError = error as Error
       retries--
