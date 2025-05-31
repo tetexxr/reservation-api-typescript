@@ -8,7 +8,7 @@ const run = (command: string, args: string[]): void => {
   const result = spawnSync(command, args, { stdio: 'inherit' })
   if (result.status !== 0) {
     console.log('\x1b[31m%s\x1b[0m', `Command failed with status ${result.status}`)
-    process.exit(result.status || 1)
+    throw new Error(`Command failed: ${command} ${args.join(' ')} with status ${result.status}`)
   }
 }
 
@@ -34,7 +34,7 @@ const waitForDatabase = async (): Promise<void> => {
 
   console.error('❌ Database not ready after 15 seconds')
   console.error('Last error:', lastError?.message)
-  process.exit(1)
+  throw new Error('Database not ready after 15 seconds')
 }
 
 const runTests = async (): Promise<void> => {
@@ -52,12 +52,11 @@ const runTests = async (): Promise<void> => {
     const isIntegrationOnly = process.argv.includes('--integration')
     const testPath = isIntegrationOnly ? 'tests/integration' : 'tests'
     run('npx', ['vitest', isRunMode ? 'run' : '', testPath])
-
-    console.log('🧹 Cleaning up...')
-    run('docker', ['compose', 'down'])
   } catch (error) {
     console.error('❌ Error during test execution:', error)
-    process.exit(1)
+  } finally {
+    console.log('🧹 Cleaning up...')
+    run('docker', ['compose', 'down'])
   }
 }
 
