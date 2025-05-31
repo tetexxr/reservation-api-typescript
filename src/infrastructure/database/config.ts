@@ -27,4 +27,12 @@ export interface Database {
     reservation_id: string
     table_number: number
   }
+  reservations: {
+    id: string
+    time: Date
+    customer_name: string
+    customer_email: string
+    customer_phone_number: string
+    party_size: number
+  }
 }
