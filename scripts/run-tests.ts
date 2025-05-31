@@ -45,7 +45,7 @@ const runTests = async (): Promise<void> => {
     await waitForDatabase()
 
     console.log('🔄 Running database migrations...')
-    run('npx', ['tsx', 'node_modules/kysely-migrate/dist/esm/cli.js', 'up'])
+    run('npx', ['tsx', 'node_modules/kysely-migrate/dist/esm/cli.js', 'up', '--latest'])
 
     console.log('🚀 Running tests...')
     const isRunMode = process.argv.includes('--run')
