@@ -21,8 +21,8 @@ export function toDto(availableSlots: AvailableSlot[]): GetAvailableSlotsRespons
     availableSlots
       .sort((a, b) => a.from.getTime() - b.from.getTime())
       .map((slot) => {
-        const from = DateTime.fromJSDate(slot.from, { zone: 'utc' }).setZone('Europe/Madrid').toFormat(ISO_FORMAT)
-        const to = DateTime.fromJSDate(slot.to, { zone: 'utc' }).setZone('Europe/Madrid').toFormat(ISO_FORMAT)
+        const from = DateTime.fromJSDate(slot.from, { zone: 'utc' }).toLocal().toFormat(ISO_FORMAT)
+        const to = DateTime.fromJSDate(slot.to, { zone: 'utc' }).toLocal().toFormat(ISO_FORMAT)
         return new AvailableSlotDto(from!, to!, slot.tableNumber.value)
       })
   )
