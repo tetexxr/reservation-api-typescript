@@ -17,7 +17,7 @@ export const db = new Kysely<Database>({
 
 export interface Database {
   tables: {
-    table_number: number
+    number: number
     maximum_seating_capacity: number
   }
   wait_list: {

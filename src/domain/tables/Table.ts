@@ -2,7 +2,7 @@ import { TableNumber } from './TableNumber'
 
 export class Table {
   constructor(
-    public readonly tableNumber: TableNumber,
+    public readonly number: TableNumber,
     public readonly maximumSeatingCapacity: number
   ) {
     if (maximumSeatingCapacity <= 0) {

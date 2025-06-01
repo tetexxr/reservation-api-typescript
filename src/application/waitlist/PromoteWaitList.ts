@@ -36,11 +36,11 @@ export class PromoteWaitList {
         new GetFreeTablesQuery(reservation.time, reservation.partySize)
       )
       if (freeTables.length > 0) {
-        await this.reservationTableRepository.add(reservation.id, freeTables[0].tableNumber)
+        await this.reservationTableRepository.add(reservation.id, freeTables[0].number)
         await this.waitListRepository.remove(reservation.id)
 
         // This can be replaced sending a notification to the customer
-        console.log(`Promoted reservation ${reservation.id.value} to table ${freeTables[0].tableNumber.value}`)
+        console.log(`Promoted reservation ${reservation.id.value} to table ${freeTables[0].number.value}`)
       }
     }
   }

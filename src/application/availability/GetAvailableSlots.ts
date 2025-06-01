@@ -21,7 +21,7 @@ export class GetAvailableSlots {
   async execute(query: GetAvailableSlotsQuery): Promise<AvailableSlot[]> {
     const tables = (await this.tableRepository.findAll())
       .filter((table) => table.isSuitableForPartySize(query.partySize))
-      .sort((a, b) => a.tableNumber.value - b.tableNumber.value)
+      .sort((a, b) => a.number.value - b.number.value)
     const reservationTables = await this.reservationTableRepository.findAll()
     const reservations = (await this.reservationRepository.findAll())
       .filter((reservation) => {
@@ -35,7 +35,7 @@ export class GetAvailableSlots {
       })
       .filter((reservation) => {
         const tableNumber = reservationTables.get(reservation.id)
-        return tableNumber !== undefined && tables.some((table) => table.tableNumber.equals(tableNumber))
+        return tableNumber !== undefined && tables.some((table) => table.number.equals(tableNumber))
       })
       .sort((a, b) => a.time.getTime() - b.time.getTime())
 
@@ -55,12 +55,12 @@ export class GetAvailableSlots {
             slotTime < reservation.getEndTime() &&
             slotEndTime > reservation.time &&
             tableNumber !== undefined &&
-            tableNumber.equals(table.tableNumber)
+            tableNumber.equals(table.number)
           )
         }
         const isSlotAvailable = !reservations.some(slotFilter)
         if (isSlotAvailable) {
-          availableSlots.push(new AvailableSlot(slotTime, slotEndTime, query.partySize, table.tableNumber))
+          availableSlots.push(new AvailableSlot(slotTime, slotEndTime, query.partySize, table.number))
           slotTime = slotEndTime
         } else {
           const endTime = reservations.find(slotFilter)!.getEndTime()
