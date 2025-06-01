@@ -58,6 +58,7 @@ This project was implemented using these technologies:
 To do a complete build of the project, you need to follow these steps:
 ```bash
 docker compose up       # to start the MySQL database
+yarn install            # to install the dependencies
 yarn migrate            # to run the database migrations
 yarn generate-types     # to generate the database types
 yarn build              # to build the project
