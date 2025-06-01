@@ -1,7 +1,6 @@
 import 'reflect-metadata'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GetAvailableSlots } from '@/application/availability/GetAvailableSlots'
-import { GetAvailableSlotsQuery } from '@/application/availability/GetAvailableSlotsQuery'
 import { AvailableSlot } from '@/domain/availability/AvailableSlot'
 import { Table } from '@/domain/tables/Table'
 import { TableNumber } from '@/domain/tables/TableNumber'
@@ -52,8 +51,10 @@ describe('GetAvailableSlots', () => {
     reservationTableRepository.findAll.mockResolvedValue(new Map())
 
     const getAvailableSlots = new GetAvailableSlots(tableRepository, reservationRepository, reservationTableRepository)
-    const query = new GetAvailableSlotsQuery(new Date('2021-10-10'), 4)
-    const availableSlots = await getAvailableSlots.execute(query)
+    const availableSlots = await getAvailableSlots.execute({
+      date: new Date('2021-10-10'),
+      partySize: 4
+    })
 
     // 24 slots per table (15 min slots from 8:00 to 14:00), for 2 tables with party size 4
     expect(availableSlots.length).toBe(24 * 2)
@@ -79,8 +80,10 @@ describe('GetAvailableSlots', () => {
     reservationTableRepository.findAll.mockResolvedValue(reservedTables)
 
     const getAvailableSlots = new GetAvailableSlots(tableRepository, reservationRepository, reservationTableRepository)
-    const query = new GetAvailableSlotsQuery(new Date('2021-10-10'), 4)
-    const availableSlots = await getAvailableSlots.execute(query)
+    const availableSlots = await getAvailableSlots.execute({
+      date: new Date('2021-10-10'),
+      partySize: 4
+    })
 
     expect(availableSlots).toEqual([])
   })
@@ -97,8 +100,10 @@ describe('GetAvailableSlots', () => {
     reservationTableRepository.findAll.mockResolvedValue(reservedTables)
 
     const getAvailableSlots = new GetAvailableSlots(tableRepository, reservationRepository, reservationTableRepository)
-    const query = new GetAvailableSlotsQuery(new Date('2021-10-10'), 4)
-    const availableSlots = await getAvailableSlots.execute(query)
+    const availableSlots = await getAvailableSlots.execute({
+      date: new Date('2021-10-10'),
+      partySize: 4
+    })
 
     expect(availableSlots.length).toBe(6)
     expect(availableSlots).toEqual([
@@ -127,8 +132,10 @@ describe('GetAvailableSlots', () => {
     reservationTableRepository.findAll.mockResolvedValue(reservedTables)
 
     const getAvailableSlots = new GetAvailableSlots(tableRepository, reservationRepository, reservationTableRepository)
-    const query = new GetAvailableSlotsQuery(new Date('2021-10-10'), 4)
-    const availableSlots = await getAvailableSlots.execute(query)
+    const availableSlots = await getAvailableSlots.execute({
+      date: new Date('2021-10-10'),
+      partySize: 4
+    })
 
     expect(availableSlots.length).toBe(3)
     expect(availableSlots).toEqual([

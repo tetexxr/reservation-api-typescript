@@ -1,7 +1,6 @@
 import 'reflect-metadata'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GetFreeTables } from '@/application/availability/GetFreeTables'
-import { GetFreeTablesQuery } from '@/application/availability/GetFreeTablesQuery'
 import { Table } from '@/domain/tables/Table'
 import { TableNumber } from '@/domain/tables/TableNumber'
 import { Reservation } from '@/domain/reservations/Reservation'
@@ -50,8 +49,10 @@ describe('GetFreeTables', () => {
 
     const getFreeTables = new GetFreeTables(tableRepository, reservationRepository, reservationTableRepository)
 
-    const query = new GetFreeTablesQuery(new Date('2021-10-10T10:00:00'), 4)
-    const result = await getFreeTables.execute(query)
+    const result = await getFreeTables.execute({
+      reservationTime: new Date('2021-10-10T10:00:00'),
+      partySize: 4
+    })
 
     expect(result).toEqual([new Table(new TableNumber(2), 4), new Table(new TableNumber(3), 4)])
     expect(tableRepository.findAll).toHaveBeenCalledTimes(1)
@@ -65,8 +66,10 @@ describe('GetFreeTables', () => {
 
     const getFreeTables = new GetFreeTables(tableRepository, reservationRepository, reservationTableRepository)
 
-    const query = new GetFreeTablesQuery(new Date('2021-10-10T10:00:00'), 3)
-    const result = await getFreeTables.execute(query)
+    const result = await getFreeTables.execute({
+      reservationTime: new Date('2021-10-10T10:00:00'),
+      partySize: 3
+    })
 
     expect(result).toEqual([new Table(new TableNumber(1), 4)])
     expect(tableRepository.findAll).toHaveBeenCalledTimes(1)
@@ -88,8 +91,10 @@ describe('GetFreeTables', () => {
 
     const getFreeTables = new GetFreeTables(tableRepository, reservationRepository, reservationTableRepository)
 
-    const query = new GetFreeTablesQuery(new Date('2021-10-10T10:00:00'), 4)
-    const result = await getFreeTables.execute(query)
+    const result = await getFreeTables.execute({
+      reservationTime: new Date('2021-10-10T10:00:00'),
+      partySize: 4
+    })
 
     expect(result).toEqual([])
     expect(tableRepository.findAll).toHaveBeenCalledTimes(1)
@@ -111,8 +116,10 @@ describe('GetFreeTables', () => {
 
     const getFreeTables = new GetFreeTables(tableRepository, reservationRepository, reservationTableRepository)
 
-    const query = new GetFreeTablesQuery(new Date('2021-10-10T10:05:00'), 4)
-    const result = await getFreeTables.execute(query)
+    const result = await getFreeTables.execute({
+      reservationTime: new Date('2021-10-10T10:05:00'),
+      partySize: 4
+    })
 
     expect(result).toEqual([new Table(new TableNumber(2), 4)])
     expect(tableRepository.findAll).toHaveBeenCalledTimes(1)
@@ -126,8 +133,10 @@ describe('GetFreeTables', () => {
 
     const getFreeTables = new GetFreeTables(tableRepository, reservationRepository, reservationTableRepository)
 
-    const query = new GetFreeTablesQuery(new Date('2021-10-10T10:00:00'), 8)
-    const result = await getFreeTables.execute(query)
+    const result = await getFreeTables.execute({
+      reservationTime: new Date('2021-10-10T10:00:00'),
+      partySize: 8
+    })
 
     expect(result).toEqual([])
     expect(tableRepository.findAll).toHaveBeenCalledTimes(1)

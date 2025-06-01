@@ -1,6 +1,5 @@
-import { injectable, inject } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { GetFreeTables } from '../availability/GetFreeTables'
-import { GetFreeTablesQuery } from '../availability/GetFreeTablesQuery'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
@@ -19,8 +18,10 @@ export class UpdateReservation {
     await this.reservationTableRepository.remove(command.reservation.id)
     await this.waitListRepository.remove(command.reservation.id)
     await this.reservationRepository.update(command.reservation)
-    const query = new GetFreeTablesQuery(command.reservation.time, command.reservation.partySize)
-    const freeTables = await this.getFreeTables.execute(query)
+    const freeTables = await this.getFreeTables.execute({
+      reservationTime: command.reservation.time,
+      partySize: command.reservation.partySize
+    })
     if (freeTables.length === 0) {
       await this.waitListRepository.add(command.reservation.id)
     } else {

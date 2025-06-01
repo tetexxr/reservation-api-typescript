@@ -1,6 +1,5 @@
-import { injectable, inject } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { GetFreeTables } from '../availability/GetFreeTables'
-import { GetFreeTablesQuery } from '../availability/GetFreeTablesQuery'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 import { WaitListRepository } from '@/domain/waitlist/WaitListRepository'
@@ -32,9 +31,10 @@ export class PromoteWaitList {
       .filter((reservation) => waitList.has(reservation.id))
 
     for (const reservation of reservationsWaiting) {
-      const freeTables = await this.getFreeTables.execute(
-        new GetFreeTablesQuery(reservation.time, reservation.partySize)
-      )
+      const freeTables = await this.getFreeTables.execute({
+        reservationTime: reservation.time,
+        partySize: reservation.partySize
+      })
       if (freeTables.length > 0) {
         await this.reservationTableRepository.add(reservation.id, freeTables[0].number)
         await this.waitListRepository.remove(reservation.id)

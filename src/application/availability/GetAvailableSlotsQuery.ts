@@ -1,6 +1,4 @@
-export class GetAvailableSlotsQuery {
-  constructor(
-    public readonly date: Date,
-    public readonly partySize: number
-  ) {}
+export type GetAvailableSlotsQuery = {
+  date: Date
+  partySize: number
 }
