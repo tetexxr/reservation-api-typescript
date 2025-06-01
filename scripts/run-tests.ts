@@ -50,13 +50,15 @@ const runTests = async (): Promise<void> => {
     console.log('🚀 Running tests...')
     const isRunMode = process.argv.includes('--run')
     const isIntegrationOnly = process.argv.includes('--integration')
-    const testPath = isIntegrationOnly ? 'tests/integration' : 'tests'
+    const filePath = process.argv.find((arg) => arg.endsWith('.test.ts'))
+    const testPath = filePath || (isIntegrationOnly ? 'tests/integration' : 'tests')
     run('npx', ['vitest', isRunMode ? 'run' : '', testPath])
   } catch (error) {
     console.error('❌ Error during test execution:', error)
   } finally {
     console.log('🧹 Cleaning up...')
     run('docker', ['compose', 'down'])
+    process.exit()
   }
 }
 

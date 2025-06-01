@@ -13,6 +13,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       exclude: ['node_modules/', 'tests/']
     },
-    reporters: ['verbose']
+    reporters: ['verbose'],
+    fileParallelism: false
   }
 })
