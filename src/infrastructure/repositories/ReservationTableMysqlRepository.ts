@@ -8,29 +8,29 @@ import { TableNumber } from '@/domain/tables/TableNumber'
 export class ReservationTableMysqlRepository implements ReservationTableRepository {
   async add(reservationId: ReservationId, tableNumber: TableNumber): Promise<void> {
     await db
-      .insertInto('reservation_tables')
+      .insertInto('reservationTables')
       .values({
-        reservation_id: reservationId.value,
-        table_number: tableNumber.value
+        reservationId: reservationId.value,
+        tableNumber: tableNumber.value
       })
       .execute()
   }
 
   async remove(reservationId: ReservationId): Promise<void> {
-    await db.deleteFrom('reservation_tables').where('reservation_id', '=', reservationId.value).execute()
+    await db.deleteFrom('reservationTables').where('reservationId', '=', reservationId.value).execute()
   }
 
   async findAll(): Promise<Map<ReservationId, TableNumber>> {
-    const results = await db.selectFrom('reservation_tables').selectAll().orderBy('table_number', 'asc').execute()
-    return new Map(results.map((r) => [new ReservationId(r.reservation_id), new TableNumber(r.table_number)]))
+    const results = await db.selectFrom('reservationTables').selectAll().orderBy('tableNumber', 'asc').execute()
+    return new Map(results.map((r) => [new ReservationId(r.reservationId), new TableNumber(r.tableNumber)]))
   }
 
   async findById(reservationId: ReservationId): Promise<TableNumber | null> {
     const result = await db
-      .selectFrom('reservation_tables')
-      .select('table_number')
-      .where('reservation_id', '=', reservationId.value)
+      .selectFrom('reservationTables')
+      .select('tableNumber')
+      .where('reservationId', '=', reservationId.value)
       .executeTakeFirst()
-    return result ? new TableNumber(result.table_number) : null
+    return result ? new TableNumber(result.tableNumber) : null
   }
 }

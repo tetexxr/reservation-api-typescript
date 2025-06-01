@@ -1,5 +1,6 @@
-import { Kysely, MysqlDialect } from 'kysely'
+import { CamelCasePlugin, Kysely, MysqlDialect } from 'kysely'
 import { createPool } from 'mysql2'
+import { DB } from 'kysely-codegen'
 
 const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
@@ -9,30 +10,9 @@ const dbConfig = {
   database: process.env.DB_NAME || 'reservation_api'
 }
 
-export const db = new Kysely<Database>({
+export const db = new Kysely<DB>({
   dialect: new MysqlDialect({
     pool: createPool(dbConfig)
-  })
+  }),
+  plugins: [new CamelCasePlugin()]
 })
-
-export interface Database {
-  tables: {
-    number: number
-    maximum_seating_capacity: number
-  }
-  wait_list: {
-    reservation_id: string
-  }
-  reservation_tables: {
-    reservation_id: string
-    table_number: number
-  }
-  reservations: {
-    id: string
-    time: Date
-    customer_name: string
-    customer_email: string
-    customer_phone_number: string
-    party_size: number
-  }
-}

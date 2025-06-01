@@ -1,0 +1,6 @@
+{
+  "dialect": "mysql",
+  "camelCase": true,
+  "typeOnlyImports": true,
+  "url": "mysql://root:MyStr0ng!P@ssword@localhost:3306/reservation_api"
+}

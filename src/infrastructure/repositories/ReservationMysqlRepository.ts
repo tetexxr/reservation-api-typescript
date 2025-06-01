@@ -13,10 +13,10 @@ export class ReservationMysqlRepository implements ReservationRepository {
       .values({
         id: reservation.id.value,
         time: reservation.time,
-        customer_name: reservation.customerDetails.name,
-        customer_email: reservation.customerDetails.email,
-        customer_phone_number: reservation.customerDetails.phoneNumber,
-        party_size: reservation.partySize
+        customerName: reservation.customerDetails.name,
+        customerEmail: reservation.customerDetails.email,
+        customerPhoneNumber: reservation.customerDetails.phoneNumber,
+        partySize: reservation.partySize
       })
       .execute()
 
@@ -37,8 +37,8 @@ export class ReservationMysqlRepository implements ReservationRepository {
     return new Reservation(
       new ReservationId(result.id),
       result.time,
-      new CustomerDetails(result.customer_name, result.customer_email, result.customer_phone_number),
-      result.party_size
+      new CustomerDetails(result.customerName, result.customerEmail, result.customerPhoneNumber),
+      result.partySize
     )
   }
 
@@ -46,10 +46,10 @@ export class ReservationMysqlRepository implements ReservationRepository {
     await db
       .updateTable('reservations')
       .set({
-        customer_name: reservation.customerDetails.name,
-        customer_email: reservation.customerDetails.email,
-        customer_phone_number: reservation.customerDetails.phoneNumber,
-        party_size: reservation.partySize,
+        customerName: reservation.customerDetails.name,
+        customerEmail: reservation.customerDetails.email,
+        customerPhoneNumber: reservation.customerDetails.phoneNumber,
+        partySize: reservation.partySize,
         time: reservation.time
       })
       .where('id', '=', reservation.id.value)
@@ -65,15 +65,15 @@ export class ReservationMysqlRepository implements ReservationRepository {
 
     const filteredResults = !name
       ? results
-      : results.filter((reservation) => this.matches(reservation.customer_name, name))
+      : results.filter((reservation) => this.matches(reservation.customerName, name))
 
     return filteredResults.map(
       (result) =>
         new Reservation(
           new ReservationId(result.id),
           result.time,
-          new CustomerDetails(result.customer_name, result.customer_email, result.customer_phone_number),
-          result.party_size
+          new CustomerDetails(result.customerName, result.customerEmail, result.customerPhoneNumber),
+          result.partySize
         )
     )
   }

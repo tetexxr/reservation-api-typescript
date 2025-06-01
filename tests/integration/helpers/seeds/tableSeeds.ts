@@ -23,7 +23,7 @@ export async function seedTables(): Promise<void> {
       .insertInto('tables')
       .values({
         number: table.number.value,
-        maximum_seating_capacity: table.maximumSeatingCapacity
+        maximumSeatingCapacity: table.maximumSeatingCapacity
       })
       .execute()
   }
