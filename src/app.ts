@@ -19,10 +19,10 @@ app.get('/health', async () => {
 })
 
 // Register routes
-container.resolve<AvailabilityController>('AvailabilityController').registerRoutes(app)
-container.resolve<ReservationController>('ReservationController').registerRoutes(app)
+container.resolve(AvailabilityController).registerRoutes(app)
+container.resolve(ReservationController).registerRoutes(app)
 
 // Start background tasks
-container.resolve<SendNotificationTask>('SendNotificationTask')
+container.resolve(SendNotificationTask)
 
 export default app
