@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { ReservationTableRepository } from '@/domain/reservations/ReservationTableRepository'
 import { Table } from '@/domain/tables/Table'
@@ -20,7 +20,7 @@ export class GetFreeTables {
       .map((reservation) => reservation.id)
     const allReservationTables = await this.reservationTableRepository.findAll()
     const reservedTables = [...allReservationTables]
-      .filter((entry) => overlappingReservations.includes(entry[0]))
+      .filter((entry) => overlappingReservations.some((r) => r.value === entry[0].value))
       .map((entry) => entry[1])
     const freeTables = tables
       .filter((table) => !reservedTables.some((reservedTable) => reservedTable.equals(table.number)))

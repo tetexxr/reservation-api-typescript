@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { AvailableSlot } from '@/domain/availability/AvailableSlot'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
@@ -23,6 +23,7 @@ export class GetAvailableSlots {
       .filter((table) => table.isSuitableForPartySize(query.partySize))
       .sort((a, b) => a.number.value - b.number.value)
     const reservationTables = await this.reservationTableRepository.findAll()
+    const reservationTableValues = new Map([...reservationTables].map((entry) => [entry[0].value, entry[1].value]))
     const reservations = (await this.reservationRepository.findAll())
       .filter((reservation) => {
         const reservationDate = new Date(reservation.time)
@@ -34,8 +35,8 @@ export class GetAvailableSlots {
         )
       })
       .filter((reservation) => {
-        const tableNumber = reservationTables.get(reservation.id)
-        return tableNumber !== undefined && tables.some((table) => table.number.equals(tableNumber))
+        const tableNumber = reservationTableValues.get(reservation.id.value)
+        return tableNumber !== undefined && tables.some((table) => table.number.value === tableNumber)
       })
       .sort((a, b) => a.time.getTime() - b.time.getTime())
 
@@ -50,12 +51,12 @@ export class GetAvailableSlots {
       while (new Date(slotTime.getTime() + GetAvailableSlots.SLOT_DURATION * 60_000) <= closing) {
         const slotEndTime = new Date(slotTime.getTime() + GetAvailableSlots.SLOT_DURATION * 60_000)
         const slotFilter = (reservation: Reservation): boolean => {
-          const tableNumber = reservationTables.get(reservation.id)
+          const tableNumber = reservationTableValues.get(reservation.id.value)
           return (
             slotTime < reservation.getEndTime() &&
             slotEndTime > reservation.time &&
             tableNumber !== undefined &&
-            tableNumber.equals(table.number)
+            tableNumber === table.number.value
           )
         }
         const isSlotAvailable = !reservations.some(slotFilter)
