@@ -10,7 +10,7 @@ describe('ReservationTableRepository', () => {
   const repository = container.resolve<ReservationTableRepository>('ReservationTableRepository')
 
   beforeEach(async () => {
-    await cleaner()
+    await cleaner({ reservationTables: true })
   })
 
   it('should add a reservation table', async () => {

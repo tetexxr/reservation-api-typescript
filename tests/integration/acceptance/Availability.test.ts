@@ -17,7 +17,7 @@ describe('Availability', () => {
   })
 
   beforeEach(async () => {
-    await cleaner()
+    await cleaner({ reservations: true, reservationTables: true })
   })
 
   it('should get all available slots', async () => {

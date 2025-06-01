@@ -12,7 +12,7 @@ describe('Reservation', () => {
   const reservationRepository = container.resolve<ReservationRepository>('ReservationRepository')
 
   beforeEach(async () => {
-    await cleaner()
+    await cleaner({ reservations: true, reservationTables: true })
   })
 
   async function insertReservation(numberToAdd: number): Promise<void> {

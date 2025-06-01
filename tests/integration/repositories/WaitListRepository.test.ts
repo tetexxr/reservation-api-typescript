@@ -9,7 +9,7 @@ describe('WaitListRepository', () => {
   const repository = container.resolve<WaitListRepository>('WaitListRepository')
 
   beforeEach(async () => {
-    await cleaner()
+    await cleaner({ waitList: true })
   })
 
   it('should add a reservation to the waitlist', async () => {
