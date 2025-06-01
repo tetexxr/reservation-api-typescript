@@ -3,7 +3,6 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import app from '@/app'
 import { container } from 'tsyringe'
 import { CreateReservation } from '@/application/reservations/CreateReservation'
-import { CreateReservationCommand } from '@/application/reservations/CreateReservationCommand'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { Cleaner } from '../helpers/Cleaner'
@@ -37,7 +36,9 @@ describe('Availability', () => {
       '2021-10-10T13:15:00'
     ]
     for (const t of times) {
-      await createReservation.execute(new CreateReservationCommand(reservationAt(new Date(t))))
+      await createReservation.execute({
+        reservation: reservationAt(new Date(t))
+      })
     }
 
     const response = await app.inject({
@@ -92,8 +93,12 @@ describe('Availability', () => {
     const opening = new Date('2021-10-10T08:00:00')
     for (let i = 0; i <= 23; i++) {
       const time = new Date(opening.getTime() + 45 * 60_000 * i)
-      await createReservation.execute(new CreateReservationCommand(reservationAt(time)))
-      await createReservation.execute(new CreateReservationCommand(reservationAt(time)))
+      await createReservation.execute({
+        reservation: reservationAt(time)
+      })
+      await createReservation.execute({
+        reservation: reservationAt(time)
+      })
     }
 
     const response = await app.inject({

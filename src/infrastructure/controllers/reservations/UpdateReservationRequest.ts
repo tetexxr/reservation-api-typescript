@@ -13,13 +13,13 @@ export class UpdateReservationRequest {
   ) {}
 
   toCommand(reservationId: ReservationId): UpdateReservationCommand {
-    return new UpdateReservationCommand(
-      new Reservation(
+    return {
+      reservation: new Reservation(
         reservationId,
         this.time,
         new CustomerDetails(this.name, this.email, this.phoneNumber),
         this.partySize
       )
-    )
+    }
   }
 }

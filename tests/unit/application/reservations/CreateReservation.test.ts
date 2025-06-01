@@ -1,7 +1,6 @@
 import 'reflect-metadata'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { CreateReservation } from '@/application/reservations/CreateReservation'
-import { CreateReservationCommand } from '@/application/reservations/CreateReservationCommand'
 import { GetFreeTables } from '@/application/availability/GetFreeTables'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
@@ -57,9 +56,10 @@ describe('CreateReservation', () => {
       reservationTableRepository,
       waitListRepository
     )
-    const command = new CreateReservationCommand(reservation)
 
-    const id = await createReservation.execute(command)
+    const id = await createReservation.execute({
+      reservation
+    })
 
     expect(reservationRepository.insert).toHaveBeenCalledWith(reservation)
     expect(reservationTableRepository.add).toHaveBeenCalledWith(reservation.id, new TableNumber(1))
@@ -84,9 +84,10 @@ describe('CreateReservation', () => {
       reservationTableRepository,
       waitListRepository
     )
-    const command = new CreateReservationCommand(reservation)
 
-    const id = await createReservation.execute(command)
+    const id = await createReservation.execute({
+      reservation
+    })
 
     expect(reservationRepository.insert).toHaveBeenCalledWith(reservation)
     expect(reservationTableRepository.add).not.toHaveBeenCalled()

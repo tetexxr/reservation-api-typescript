@@ -1,5 +1,5 @@
 import { Reservation } from '@/domain/reservations/Reservation'
 
-export class CreateReservationCommand {
-  constructor(public readonly reservation: Reservation) {}
+export type CreateReservationCommand = {
+  reservation: Reservation
 }

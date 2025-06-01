@@ -12,8 +12,12 @@ export class CreateReservationRequest {
   ) {}
 
   toCommand(): CreateReservationCommand {
-    return new CreateReservationCommand(
-      Reservation.create(this.time, new CustomerDetails(this.name, this.email, this.phoneNumber), this.partySize)
-    )
+    return {
+      reservation: Reservation.create(
+        this.time,
+        new CustomerDetails(this.name, this.email, this.phoneNumber),
+        this.partySize
+      )
+    }
   }
 }

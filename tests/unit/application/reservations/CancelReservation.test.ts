@@ -1,7 +1,6 @@
 import 'reflect-metadata'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { CancelReservation } from '@/application/reservations/CancelReservation'
-import { CancelReservationCommand } from '@/application/reservations/CancelReservationCommand'
 import { PromoteWaitList } from '@/application/waitlist/PromoteWaitList'
 import { PromoteWaitListCommand } from '@/application/waitlist/PromoteWaitListCommand'
 import { Reservation } from '@/domain/reservations/Reservation'
@@ -59,9 +58,10 @@ describe('CancelReservation', () => {
       waitListRepository,
       promoteWaitList
     )
-    const command = new CancelReservationCommand(reservationId)
 
-    await cancelReservation.execute(command)
+    await cancelReservation.execute({
+      reservationId
+    })
 
     expect(reservationRepository.delete).toHaveBeenCalledWith(reservationId)
     expect(reservationTableRepository.remove).toHaveBeenCalledWith(reservationId)
@@ -84,9 +84,10 @@ describe('CancelReservation', () => {
       waitListRepository,
       promoteWaitList
     )
-    const command = new CancelReservationCommand(reservation.id)
 
-    await cancelReservation.execute(command)
+    await cancelReservation.execute({
+      reservationId: reservation.id
+    })
 
     expect(promoteWaitList.execute).toHaveBeenCalledWith(PromoteWaitListCommand.create(reservation))
   })
