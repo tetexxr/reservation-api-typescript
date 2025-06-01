@@ -2,22 +2,20 @@ import { CreateReservationCommand } from '@/application/reservations/CreateReser
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
 
-export class CreateReservationRequest {
-  constructor(
-    public readonly time: Date,
-    public readonly name: string,
-    public readonly email: string,
-    public readonly phoneNumber: string,
-    public readonly partySize: number
-  ) {}
+export type CreateReservationRequest = {
+  time: Date
+  name: string
+  email: string
+  phoneNumber: string
+  partySize: number
+}
 
-  toCommand(): CreateReservationCommand {
-    return {
-      reservation: Reservation.create(
-        this.time,
-        new CustomerDetails(this.name, this.email, this.phoneNumber),
-        this.partySize
-      )
-    }
+export function toCommand(request: CreateReservationRequest): CreateReservationCommand {
+  return {
+    reservation: Reservation.create(
+      new Date(request.time),
+      new CustomerDetails(request.name, request.email, request.phoneNumber),
+      request.partySize
+    )
   }
 }

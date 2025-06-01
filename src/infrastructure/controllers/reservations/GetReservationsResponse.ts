@@ -1,35 +1,29 @@
 import { Reservation } from '@/domain/reservations/Reservation'
 
-export class GetReservationsResponse {
-  constructor(
-    public readonly items: ReservationDto[],
-    public readonly total: number = items.length
-  ) {}
+export type GetReservationsResponse = {
+  items: ReservationDto[]
+  total: number
 }
 
-export class ReservationDto {
-  constructor(
-    public readonly id: string,
-    public readonly time: Date,
-    public readonly name: string,
-    public readonly email: string,
-    public readonly phoneNumber: string,
-    public readonly partySize: number
-  ) {}
+export type ReservationDto = {
+  id: string
+  time: Date
+  name: string
+  email: string
+  phoneNumber: string
+  partySize: number
 }
 
 export function toDto(reservations: Reservation[]): GetReservationsResponse {
-  return new GetReservationsResponse(
-    reservations.map(
-      (reservation) =>
-        new ReservationDto(
-          reservation.id.value,
-          reservation.time,
-          reservation.customerDetails.name,
-          reservation.customerDetails.email,
-          reservation.customerDetails.phoneNumber,
-          reservation.partySize
-        )
-    )
-  )
+  return {
+    items: reservations.map((reservation) => ({
+      id: reservation.id.value,
+      time: reservation.time,
+      name: reservation.customerDetails.name,
+      email: reservation.customerDetails.email,
+      phoneNumber: reservation.customerDetails.phoneNumber,
+      partySize: reservation.partySize
+    })),
+    total: reservations.length
+  }
 }

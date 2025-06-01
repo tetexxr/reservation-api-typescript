@@ -5,8 +5,8 @@ import { CancelReservation } from '@/application/reservations/CancelReservation'
 import { UpdateReservation } from '@/application/reservations/UpdateReservation'
 import { ReservationId } from '@/domain/reservations/ReservationId'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
-import { CreateReservationRequest } from './CreateReservationRequest'
-import { UpdateReservationRequest } from './UpdateReservationRequest'
+import { CreateReservationRequest, toCommand as toCreateCommand } from './CreateReservationRequest'
+import { toCommand as toUpdateCommand, UpdateReservationRequest } from './UpdateReservationRequest'
 import { GetReservationsResponse, toDto } from './GetReservationsResponse'
 import { CreateReservationResponse } from '@/infrastructure/controllers/reservations/CreateReservationResponse'
 
@@ -23,14 +23,8 @@ export class ReservationController {
     fastify.post<{
       Body: CreateReservationRequest
     }>('/v1/reservations', async (request, reply): Promise<CreateReservationResponse> => {
-      const createReservationRequest = new CreateReservationRequest(
-        new Date(request.body.time),
-        request.body.name,
-        request.body.email,
-        request.body.phoneNumber,
-        request.body.partySize
-      )
-      const command = createReservationRequest.toCommand()
+      const createReservationRequest = request.body as CreateReservationRequest
+      const command = toCreateCommand(createReservationRequest)
       const id = await this.createReservation.execute(command)
       return reply.code(201).send({ reservationId: id.value })
     })
@@ -39,14 +33,8 @@ export class ReservationController {
       Params: { reservationId: string }
       Body: UpdateReservationRequest
     }>('/v1/reservations/:reservationId', async (request, reply) => {
-      const updateReservationRequest = new UpdateReservationRequest(
-        new Date(request.body.time),
-        request.body.name,
-        request.body.email,
-        request.body.phoneNumber,
-        request.body.partySize
-      )
-      const command = updateReservationRequest.toCommand(new ReservationId(request.params.reservationId))
+      const updateReservationRequest = request.body as UpdateReservationRequest
+      const command = toUpdateCommand(updateReservationRequest, new ReservationId(request.params.reservationId))
       await this.updateReservation.execute(command)
       return reply.code(204).send()
     })

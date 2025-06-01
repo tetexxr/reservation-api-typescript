@@ -1,3 +1,3 @@
-export class CreateReservationResponse {
-  constructor(public readonly reservationId: string) {}
+export type CreateReservationResponse = {
+  reservationId: string
 }
