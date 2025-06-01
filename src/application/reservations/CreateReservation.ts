@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
 import { GetFreeTables } from '../availability/GetFreeTables'
 import { GetFreeTablesQuery } from '../availability/GetFreeTablesQuery'
 import { ReservationId } from '@/domain/reservations/ReservationId'
