@@ -1,18 +1,19 @@
 import 'reflect-metadata'
-import { describe, it, beforeEach, expect } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import app from '@/app'
 import { container } from 'tsyringe'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { ReservationId } from '@/domain/reservations/ReservationId'
-import { cleaner } from '../helpers/cleaner'
+import { Cleaner } from '../helpers/Cleaner'
 
 describe('Reservation', () => {
   const reservationRepository = container.resolve<ReservationRepository>('ReservationRepository')
+  const cleaner = container.resolve(Cleaner)
 
   beforeEach(async () => {
-    await cleaner({ reservations: true, reservationTables: true })
+    await cleaner.execute({ reservations: true, reservationTables: true })
   })
 
   async function insertReservation(numberToAdd: number): Promise<void> {
@@ -90,7 +91,7 @@ describe('Reservation', () => {
     for (let i = 1; i <= 5; i++) {
       await reservationRepository.insert(
         Reservation.create(
-          new Date('2021-10-10T10:00:00'),
+          new Date(`2021-10-1${i}T10:00:00`),
           new CustomerDetails(`John ${i}`, 'john@test.com', '931111111'),
           4
         )

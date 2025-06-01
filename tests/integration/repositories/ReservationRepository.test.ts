@@ -1,7 +1,7 @@
 import 'reflect-metadata'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { container } from 'tsyringe'
-import { cleaner } from '../helpers/cleaner'
+import { Cleaner } from '../helpers/Cleaner'
 import { ReservationRepository } from '@/domain/reservations/ReservationRepository'
 import { Reservation } from '@/domain/reservations/Reservation'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
@@ -9,9 +9,10 @@ import { DateTime } from 'luxon'
 
 describe('ReservationRepository', () => {
   const repository = container.resolve<ReservationRepository>('ReservationRepository')
+  const cleaner = container.resolve(Cleaner)
 
   beforeEach(async () => {
-    await cleaner({ reservations: true })
+    await cleaner.execute({ reservations: true })
   })
 
   it('should insert a reservation', async () => {
@@ -55,11 +56,10 @@ describe('ReservationRepository', () => {
       )
     }
     const reservations = await repository.findAll()
-    const sortedReservations = reservations.sort((a, b) => a.customerDetails.name.localeCompare(b.customerDetails.name))
-    expect(sortedReservations).toHaveLength(5)
-    expect(sortedReservations[0].customerDetails.name).toBe('John 1')
-    expect(sortedReservations[2].time).toEqual(new Date('2021-10-13T10:00:00'))
-    expect(sortedReservations[4].customerDetails.email).toBe('john-5@test.com')
+    expect(reservations).toHaveLength(5)
+    expect(reservations[0].customerDetails.name).toBe('John 1')
+    expect(reservations[2].time).toEqual(new Date('2021-10-13T10:00:00'))
+    expect(reservations[4].customerDetails.email).toBe('john-5@test.com')
   })
 
   it('should retrieve all reservations by name', async () => {

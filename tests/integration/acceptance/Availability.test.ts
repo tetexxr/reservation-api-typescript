@@ -1,23 +1,24 @@
 import 'reflect-metadata'
-import { describe, it, beforeAll, beforeEach, expect } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import app from '@/app'
 import { container } from 'tsyringe'
 import { CreateReservation } from '@/application/reservations/CreateReservation'
 import { CreateReservationCommand } from '@/application/reservations/CreateReservationCommand'
 import { CustomerDetails } from '@/domain/reservations/CustomerDetails'
 import { Reservation } from '@/domain/reservations/Reservation'
-import { cleaner } from '../helpers/cleaner'
+import { Cleaner } from '../helpers/Cleaner'
 import { seedTables } from '../helpers/seeds'
 
 describe('Availability', () => {
   const createReservation = container.resolve(CreateReservation)
+  const cleaner = container.resolve(Cleaner)
 
   beforeAll(async () => {
     await seedTables()
   })
 
   beforeEach(async () => {
-    await cleaner({ reservations: true, reservationTables: true })
+    await cleaner.execute({ reservations: true, reservationTables: true })
   })
 
   it('should get all available slots', async () => {
