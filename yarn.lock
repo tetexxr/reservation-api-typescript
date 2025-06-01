@@ -385,9 +385,9 @@
     toad-cache "^3.7.0"
 
 "@fastify/error@^4.0.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@fastify/error/-/error-4.1.0.tgz#a6a3a8d2309bd8d3441512dff9a7c739d0c35fe2"
-  integrity sha512-KeFcciOr1eo/YvIXHP65S94jfEEqn1RxTRBT1aJaHxY5FK0/GDXYozsQMMWlZoHgi8i0s+YtrLsgj/JkUUjSkQ==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@fastify/error/-/error-4.2.0.tgz#d40f46ba75f541fdcc4dc276b7308bbc8e8e6d7a"
+  integrity sha512-RSo3sVDXfHskiBZKBPRgnQTtIqpi/7zhJOEmAxCiBcM7d0uwdGdxLlsCaLzGs8v8NnxIRlfG0N51p5yFaOentQ==
 
 "@fastify/fast-json-stringify-compiler@^5.0.0":
   version "5.0.3"
@@ -520,9 +520,9 @@
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
 "@pkgr/core@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.4.tgz#d897170a2b0ba51f78a099edccd968f7b103387c"
-  integrity sha512-ROFF39F6ZrnzSUEmQQZUar0Jt4xVoP9WnDRdWwF4NNcXs3xBTLgBUDoOwW141y1jP+S8nahIbdxbFC7IShw9Iw==
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.7.tgz#eb5014dfd0b03e7f3ba2eeeff506eed89b028058"
+  integrity sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==
 
 "@rollup/rollup-android-arm-eabi@4.41.1":
   version "4.41.1"
