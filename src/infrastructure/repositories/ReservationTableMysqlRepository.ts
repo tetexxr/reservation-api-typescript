@@ -21,7 +21,7 @@ export class ReservationTableMysqlRepository implements ReservationTableReposito
   }
 
   async findAll(): Promise<Map<ReservationId, TableNumber>> {
-    const results = await db.selectFrom('reservation_tables').selectAll().execute()
+    const results = await db.selectFrom('reservation_tables').selectAll().orderBy('table_number', 'asc').execute()
     return new Map(results.map((r) => [new ReservationId(r.reservation_id), new TableNumber(r.table_number)]))
   }
 

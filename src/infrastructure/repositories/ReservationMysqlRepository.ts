@@ -61,7 +61,7 @@ export class ReservationMysqlRepository implements ReservationRepository {
   }
 
   async findAll(name?: string): Promise<Reservation[]> {
-    const results = await db.selectFrom('reservations').selectAll().execute()
+    const results = await db.selectFrom('reservations').selectAll().orderBy('time', 'asc').execute()
 
     const filteredResults = !name
       ? results
