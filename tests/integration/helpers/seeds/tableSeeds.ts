@@ -1,6 +1,7 @@
 import { Table } from '@/domain/tables/Table'
 import { TableNumber } from '@/domain/tables/TableNumber'
 import { db } from '@/infrastructure/database/config'
+import { TableInMemoryRepository } from '@/infrastructure/repositories/TableInMemoryRepository'
 
 const tables = [
   new Table(new TableNumber(1), 2),
@@ -14,6 +15,8 @@ const tables = [
 ]
 
 export async function seedTables(): Promise<void> {
+  TableInMemoryRepository.initialize(tables)
+
   await db.deleteFrom('tables').execute()
   for (const table of tables) {
     await db
