@@ -6,7 +6,7 @@ export type GetAvailableSlotsResponse = {
   total: number
 }
 
-export type AvailableSlotDto = {
+type AvailableSlotDto = {
   from: string
   to: string
   tableNumber: number

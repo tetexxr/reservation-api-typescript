@@ -5,7 +5,7 @@ export type GetReservationsResponse = {
   total: number
 }
 
-export type ReservationDto = {
+type ReservationDto = {
   id: string
   time: Date
   name: string
